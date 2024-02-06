@@ -13,7 +13,7 @@ export const getPosts = async (req, res) => {
 
 export const createPost = async (req, res) => {
   try {
-    const { title, description, precio, unidad, cantidad, categoria } = req.body;
+    const { title, description, precio, precioCompra, unidad, cantidad, categoria } = req.body;
     let image = null;
     if (req.files?.image) {
       const result = await uploadImage(req.files.image.tempFilePath);
@@ -23,7 +23,7 @@ export const createPost = async (req, res) => {
         public_id: result.public_id,
       };
     }
-    const newPost = new Post({ title, description, image, precio, unidad, cantidad, categoria});
+    const newPost = new Post({ title, description, image, precio, precioCompra, unidad, cantidad, categoria});
     await newPost.save();
     return res.json(newPost);
   } catch (error) {

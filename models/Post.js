@@ -16,6 +16,11 @@ const postSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    presioCompra: {
+      type: Number,
+      required: true,
+      trim: true,
+    },
     unidad: {
       type: String,
       required: true,
