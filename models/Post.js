@@ -16,7 +16,7 @@ const postSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    presioCompra: {
+    precioCompra: {
       type: Number,
       required: true,
       trim: true,
