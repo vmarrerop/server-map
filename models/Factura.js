@@ -28,9 +28,14 @@ const facturaSchema = new mongoose.Schema(
           required: true,
           trim: true,
         },
+        total: {
+          type: Number,
+          required: true,
+          trim: true
+        },
         // Otros campos relacionados con el producto, como descripción, categoría, etc.
       }],
-      total: {
+      cantidadTotal: {
         type: Number,
         required: true,
         trim: true,
