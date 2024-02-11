@@ -1,23 +1,22 @@
 import { Router } from "express";
 import {
-    getFactura,
-    createFactura,
-    updateFactura,
-    removeFactura,
-    getFactura,
-    getFacturas,
-  } from "../controllers/factura.controllers.js";
+  getFactura,
+  createFactura,
+  updateFactura,
+  removeFactura,
+  getFacturas,
+} from "../controllers/factura.controllers.js";
 
-const router = Router();
+const facturasRouter = Router();
 
-router.get("/facturas", getFacturas);
+facturasRouter.get("/facturas", getFacturas);
 
-router.get("/facturas/:id", getFactura);
+facturasRouter.get("/facturas/:id", getFactura);
 
-router.post("/facturas", createFactura);
+facturasRouter.post("/facturas", createFactura);
 
-router.put("/facturas/:id", updateFactura);
+facturasRouter.put("/facturas/:id", updateFactura);
 
-router.delete("/facturas/:id", removeFactura);
+facturasRouter.delete("/facturas/:id", removeFactura);
 
-export default router;
+export default facturasRouter;

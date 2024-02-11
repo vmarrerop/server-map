@@ -5,7 +5,7 @@ import path from 'path'
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import postRoutes from "./routes/posts.routes.js";
-import facturaRoutes from "./routes/facturas.routes.js";
+import facturasRoutes from './routes/facturas.routes.js'
 import { connectDB } from "./db.js";
 import cors from 'cors';
 
@@ -34,7 +34,7 @@ app.use(cors());
 
 // Routes
 app.use("/api", postRoutes);
-app.use("/api", facturaRoutes);
+app.use("/api", facturasRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hola gente");

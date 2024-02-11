@@ -1,4 +1,4 @@
-import Factura from "../models/Factura"; // Asegúrate de importar el modelo de Factura
+import Factura from "../models/Factura.js"; // Asegúrate de importar el modelo de Factura
 
 export const getFacturas = async (req, res) => {
   try {
