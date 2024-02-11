@@ -40,6 +40,10 @@ const facturaSchema = new mongoose.Schema(
         type: Number,
         trim: true,
       },
+      totalFactura: {
+        type: Number,
+        trim: true,
+      },
       gananciaTotal: {
         type: Number,
         trim: true,
