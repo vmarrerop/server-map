@@ -10,14 +10,14 @@ import {
 
 const router = Router();
 
-router.get("/posts", getFacturas);
+router.get("/facturas", getFacturas);
 
-router.get("/posts/:id", getFactura);
+router.get("/facturas/:id", getFactura);
 
-router.post("/posts", createFactura);
+router.post("/facturas", createFactura);
 
-router.put("/posts/:id", updateFactura);
+router.put("/facturas/:id", updateFactura);
 
-router.delete("/posts/:id", removeFactura);
+router.delete("/facturas/:id", removeFactura);
 
 export default router;
