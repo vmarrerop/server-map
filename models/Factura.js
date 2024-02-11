@@ -32,6 +32,10 @@ const facturaSchema = new mongoose.Schema(
         type: Number,
         trim: true,
       },
+      metodoPago: {
+        type: Number,
+        trim: true,
+      },
       dineroRecibido: {
         type: Number,
         trim: true,
