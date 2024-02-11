@@ -4,50 +4,49 @@ const facturaSchema = new mongoose.Schema(
     {
       cliente: {
           type: String,
-          required: true,
+          //required: true,
           trim: true,
       },
       sede: {
           type: String,
-          required: true,
+          //required: true,
           trim: true,
       },
       productos: [{
         nombre: {
           type: String,
-          required: true,
+          //required: true,
           trim: true,
         },
         cantidad: {
           type: Number,
-          required: true,
+          //required: true,
           trim: true,
         },
         precio: {
           type: Number,
-          required: true,
+          //required: true,
           trim: true,
         },
         total: {
           type: Number,
-          required: true,
+          //required: true,
           trim: true
         },
-        // Otros campos relacionados con el producto, como descripción, categoría, etc.
       }],
       cantidadTotal: {
         type: Number,
-        required: true,
+        //required: true,
         trim: true,
       },
       dineroRecibido: {
         type: Number,
-        required: true,
+       // required: true,
         trim: true,
       },
       dineroDevuelto: {
         type: Number,
-        required: true,
+        //required: true,
         trim: true,
       },
       gananciaTotal: {
