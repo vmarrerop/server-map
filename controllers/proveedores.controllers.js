@@ -1,8 +1,8 @@
-import Proveedor from "../models/Proveedor.js"; // Asegúrate de importar el modelo de Proveedor
+import Proveedores from "../models/Empresas.js"; // Asegúrate de importar el modelo de Proveedores
 
 export const getProveedores = async (req, res) => {
   try {
-    const proveedores = await Proveedor.find({});
+    const proveedores = await Proveedores.find({});
     return res.json(proveedores);
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -12,7 +12,7 @@ export const getProveedores = async (req, res) => {
 export const createProveedor = async (req, res) => {
   try {
     const { nombre, productos, cantidadTotal } = req.body;
-    const nuevoProveedor = new Proveedor({ nombre, productos, cantidadTotal });
+    const nuevoProveedor = new Proveedores({ nombre, productos, cantidadTotal });
     await nuevoProveedor.save();
     return res.json(nuevoProveedor);
   } catch (error) {
@@ -23,7 +23,7 @@ export const createProveedor = async (req, res) => {
 export const getProveedor = async (req, res) => {
   try {
     const { id } = req.params;
-    const proveedor = await Proveedor.findById(id);
+    const proveedor = await Proveedores.findById(id);
     if (!proveedor) return res.sendStatus(404);
     return res.json(proveedor);
   } catch (error) {
@@ -34,7 +34,7 @@ export const getProveedor = async (req, res) => {
 export const updateProveedor = async (req, res) => {
   try {
     const { id } = req.params;
-    const proveedorActualizado = await Proveedor.findByIdAndUpdate(id, { $set: req.body }, { new: true });
+    const proveedorActualizado = await Proveedores.findByIdAndUpdate(id, { $set: req.body }, { new: true });
     return res.json(proveedorActualizado);
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -44,7 +44,7 @@ export const updateProveedor = async (req, res) => {
 export const removeProveedor = async (req, res) => {
   try {
     const { id } = req.params;
-    const proveedor = await Proveedor.findByIdAndDelete(id);
+    const proveedor = await Proveedores.findByIdAndDelete(id);
     if (!proveedor) return res.sendStatus(404);
     res.sendStatus(204);
   } catch (error) {

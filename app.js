@@ -6,7 +6,7 @@ import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import postRoutes from "./routes/posts.routes.js";
 import facturasRoutes from './routes/facturas.routes.js'
-import proveedoresRouter from "./routes/proveedores.js";
+import proveedoresRouter from "./routes/proveedores.routes.js";
 import { connectDB } from "./db.js";
 import cors from 'cors';
 
