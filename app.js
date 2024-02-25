@@ -6,6 +6,7 @@ import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import postRoutes from "./routes/posts.routes.js";
 import facturasRoutes from './routes/facturas.routes.js'
+import proveedoresRouter from "./routes/proveedores.js";
 import { connectDB } from "./db.js";
 import cors from 'cors';
 
@@ -35,6 +36,7 @@ app.use(cors());
 // Routes
 app.use("/api", postRoutes);
 app.use("/api", facturasRoutes);
+app.use("/api", proveedoresRouter);
 
 app.get("/", (req, res) => {
   res.send("Hola gente");
