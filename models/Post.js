@@ -11,6 +11,10 @@ const postSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    proveedor: {
+      type: String,
+      trim: true,
+    },
     precio: {
       type: Number,
       required: true,
