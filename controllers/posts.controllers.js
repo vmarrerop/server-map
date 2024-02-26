@@ -46,7 +46,7 @@ export const updatePost = async (req, res) => {
   try {
     const { id } = req.params;
     // Buscar el producto a actualizar
-    const producto = await Product.findById(id);
+    const producto = await Post.findById(id);
     if (!producto) {
       return res.status(404).json({ message: "Producto no encontrado" });
     }
