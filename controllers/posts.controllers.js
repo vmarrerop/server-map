@@ -47,15 +47,12 @@ export const updatePost = async (req, res) => {
     const { id } = req.params;
     // TODO: validate req.body before updating
 
-    // if a new image is uploaded, upload it to cloudinary
+    // if a new image is uploaded, ignore it and keep the existing image
     if (req.files?.image) {
-      const result = await uploadImage(req.files.image.tempFilePath);
+      // Delete the uploaded image file
       await fs.remove(req.files.image.tempFilePath);
-      // add the new image to req.body
-      req.body.image = {
-        url: result.secure_url,
-        public_id: result.public_id,
-      };
+      // Remove the image property from req.body to ignore image update
+      delete req.body.image;
     }
 
     const updatedPost = await Post.findByIdAndUpdate(
