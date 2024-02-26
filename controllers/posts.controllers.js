@@ -45,26 +45,46 @@ export const getPost = async (req, res) => {
 export const updatePost = async (req, res) => {
   try {
     const { id } = req.params;
-    // TODO: validate req.body before updating
-
-    // if a new image is uploaded, ignore it and keep the existing image
-    if (req.files?.image) {
-      // Delete the uploaded image file
-      await fs.remove(req.files.image.tempFilePath);
-      // Remove the image property from req.body to ignore image update
-      delete req.body.image;
+    // Buscar el producto a actualizar
+    const producto = await Product.findById(id);
+    if (!producto) {
+      return res.status(404).json({ message: "Producto no encontrado" });
     }
 
-    const updatedPost = await Post.findByIdAndUpdate(
-      id,
-      { $set: req.body },
-      {
-        new: true,
+    // Actualizar la información del producto excepto la imagen
+    producto.title = req.body.title || producto.title;
+    producto.description = req.body.description || producto.description;
+    producto.proveedor = req.body.proveedor || producto.proveedor;
+    producto.precio = req.body.precio || producto.precio;
+    producto.precioCompra = req.body.precioCompra || producto.precioCompra;
+    producto.unidad = req.body.unidad || producto.unidad;
+    producto.cantidad = req.body.cantidad || producto.cantidad;
+    producto.categoria = req.body.categoria || producto.categoria;
+
+    // Actualizar la imagen solo si se proporciona una nueva imagen
+    if (req.files?.image) {
+      // Eliminar la imagen existente si existe
+      if (producto.image.public_id) {
+        // Implementa la lógica para eliminar la imagen de tu almacenamiento
+        // Por ejemplo, con Cloudinary puedes usar el método destroy
+        await cloudinary.uploader.destroy(producto.image.public_id);
       }
-    );
-    return res.json(updatedPost);
+      // Subir la nueva imagen
+      const result = await cloudinary.uploader.upload(req.files.image.tempFilePath);
+      producto.image = {
+        public_id: result.public_id,
+        url: result.secure_url,
+      };
+    }
+
+    // Guardar los cambios en la base de datos
+    await producto.save();
+
+    // Devolver la respuesta
+    res.status(200).json({ message: "Producto actualizado correctamente", producto });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    console.error(error);
+    res.status(500).json({ message: "Error al actualizar el producto" });
   }
 };
 
