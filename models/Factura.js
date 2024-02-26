@@ -36,6 +36,10 @@ const facturaSchema = new mongoose.Schema(
         type: String,
         trim: true,
       },
+      observacion: {
+        type: String,
+        trim: true,
+      },
       dineroRecibido: {
         type: Number,
         trim: true,
