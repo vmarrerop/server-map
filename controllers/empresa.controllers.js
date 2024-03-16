@@ -1,9 +1,9 @@
-import Empresa from "../models/Empresa.js";
+import Empresa from '../models/Usuarios.js'
 
 export const getUsuarios = async (req, res) => {
   try {
-    const empresa = await Empresa.find({});
-    return res.json(empresa.empleados);
+    const empresas = await Empresa.find({});
+    return res.json(empresas);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -11,9 +11,23 @@ export const getUsuarios = async (req, res) => {
 
 export const createUsuario = async (req, res) => {
   try {
-    const { nombre, cedula, direccion, celular, usuario, contraseña, cargo } = req.body;
-    const empresa = await Empresa.findOneAndUpdate({}, { $push: { empleados: { nombre, cedula, direccion, celular, usuario, contraseña, cargo } } }, { new: true });
-    return res.json(empresa);
+    const { nombre, empleados } = req.body;
+    
+    // Comprobamos si ya existe un empleado con el mismo usuario
+    const existingUsuario = await Empresa.findOne({ 'empleados.usuario': empleados.usuario });
+    if (existingUsuario) {
+      return res.status(400).json({ message: "El usuario ya existe" });
+    }
+
+    // Comprobamos si ya existe un empleado con la misma cédula
+    const existingCedula = await Empresa.findOne({ 'empleados.cedula': empleados.cedula });
+    if (existingCedula) {
+      return res.status(400).json({ message: "La cédula ya existe" });
+    }
+
+    const newEmpresa = new Empresa({ nombre, empleados });
+    await newEmpresa.save();
+    return res.json(newEmpresa);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -22,10 +36,9 @@ export const createUsuario = async (req, res) => {
 export const getUsuario = async (req, res) => {
   try {
     const { id } = req.params;
-    const empresa = await Empresa.findOne({});
-    const empleado = empresa.empleados.find((emp) => emp._id.toString() === id);
-    if (!empleado) return res.sendStatus(404);
-    return res.json(empleado);
+    const empresa = await Empresa.findById(id);
+    if (!empresa) return res.sendStatus(404);
+    return res.json(empresa);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -34,12 +47,8 @@ export const getUsuario = async (req, res) => {
 export const updateUsuario = async (req, res) => {
   try {
     const { id } = req.params;
-    const empresa = await Empresa.findOne({});
-    const index = empresa.empleados.findIndex((emp) => emp._id.toString() === id);
-    if (index === -1) return res.sendStatus(404);
-    empresa.empleados[index] = { ...empresa.empleados[index], ...req.body };
-    await empresa.save();
-    return res.json(empresa.empleados[index]);
+    const updatedEmpresa = await Empresa.findByIdAndUpdate(id, { $set: req.body }, { new: true });
+    return res.json(updatedEmpresa);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -48,9 +57,9 @@ export const updateUsuario = async (req, res) => {
 export const removeUsuario = async (req, res) => {
   try {
     const { id } = req.params;
-    const empresa = await Empresa.findOneAndUpdate({}, { $pull: { empleados: { _id: id } } }, { new: true });
+    const empresa = await Empresa.findByIdAndDelete(id);
     if (!empresa) return res.sendStatus(404);
-    return res.sendStatus(204);
+    res.sendStatus(204);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
