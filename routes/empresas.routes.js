@@ -3,20 +3,21 @@ import {
     getUsuarios,
     getUsuario,
     createUsuario,
-    updateUsuario ,
-    removeUsuario 
-} from "../controllers/empresa.controllers.js"
+    updateUsuario,
+    removeUsuario,
+    getEmpleadoByUsername 
+} from "../controllers/empresa.controllers.js";
 
 const empresaRouter = Router();
 
-empresaRouter.get("/empleados", getUsuarios);
+// Rutas para obtener usuarios
+empresaRouter.get("/empleados", getUsuarios); // Obtener todos los usuarios
+empresaRouter.get("/empleados/id/:id", getUsuario); // Obtener usuario por ID
+empresaRouter.get("/empleados/username/:username", getEmpleadoByUsername); // Obtener usuario por nombre de usuario
 
-empresaRouter.get("/empleados/:id", getUsuario);
-
-empresaRouter.post("/empleados", createUsuario);
-
-empresaRouter.put("/empleados/:id", updateUsuario);
-
-empresaRouter.delete("/empleados/:id", removeUsuario);
+// Rutas para crear, actualizar y eliminar usuarios
+empresaRouter.post("/empleados", createUsuario); // Crear un nuevo usuario
+empresaRouter.put("/empleados/:id", updateUsuario); // Actualizar un usuario existente por su ID
+empresaRouter.delete("/empleados/:id", removeUsuario); // Eliminar un usuario existente por su ID
 
 export default empresaRouter;
