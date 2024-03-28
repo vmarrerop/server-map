@@ -6,7 +6,7 @@ import {
     updateUsuario,
     removeUsuario,
     getEmpleadoByUsername 
-} from "../controllers/empresa.controllers.js";
+} from "../controllers/usuarios.controllers.js";
 
 const empresaRouter = Router();
 
