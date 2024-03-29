@@ -11,11 +11,23 @@ const facturaEmpleadoSchema = new mongoose.Schema(
       trim: true,
     },
     horaEntrada: {
-      type: Number, // Cambiado de Date a Number para almacenar la hora como milisegundos desde la medianoche
+      type: Number,
+      validate: {
+        validator: function(v) {
+          return /^([01]\d|2[0-3]):([0-5]\d)$/.test(v); // Validar formato de hora HH:mm
+        },
+        message: props => `${props.value} no es un formato de hora válido. Use el formato HH:mm.`,
+      },
       trim: true,
     },
     horaSalida: {
-      type: Number, // Cambiado de Date a Number para almacenar la hora como milisegundos desde la medianoche
+      type: Number,
+      validate: {
+        validator: function(v) {
+          return /^([01]\d|2[0-3]):([0-5]\d)$/.test(v); // Validar formato de hora HH:mm
+        },
+        message: props => `${props.value} no es un formato de hora válido. Use el formato HH:mm.`,
+      },
       trim: true,
     },
     tipoDia: {
