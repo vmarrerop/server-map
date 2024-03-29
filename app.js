@@ -9,6 +9,7 @@ import facturasRoutes from './routes/facturas.routes.js'
 import proveedoresRouter from "./routes/proveedores.routes.js";
 import empresaRouter from "./routes/usuarios.routes.js";
 import facturasProveedoresRouter from "./routes/facturasProveedores.routes.js";
+import facturasEmpleadoRouter from "./routes/facturaEmpleado.routes.js";
 import { connectDB } from "./db.js";
 import cors from 'cors';
 
@@ -41,6 +42,7 @@ app.use("/api", facturasRoutes);
 app.use("/api", proveedoresRouter);
 app.use("/api", empresaRouter);
 app.use("/api", facturasProveedoresRouter);
+app.use("/api", facturasEmpleadoRouter);
 
 app.get("/", (req, res) => {
   res.send("Hola gente");
