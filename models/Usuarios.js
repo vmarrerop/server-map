@@ -38,6 +38,10 @@ const usuarioSchema = new mongoose.Schema(
           type: String,
           trim: true,
         },
+        sede: {
+          type: String,
+          trim: true,
+        },
         horaOrdinaria: {
           type: Number,
           trim: true,
