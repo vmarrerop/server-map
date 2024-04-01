@@ -9,21 +9,7 @@ const proveedoresSchema = new mongoose.Schema(
       sede: {
         type: String,
         trim: true,
-    },
-      productos: [{
-        nombre: {
-          type: String,
-          trim: true,
-        },
-        precio: {
-          type: Number,
-          trim: true,
-        },
-      }],
-      cantidadTotal: {
-        type: Number,
-        trim: true,
-      },
+    }
     },
     {
       timestamps: true,
