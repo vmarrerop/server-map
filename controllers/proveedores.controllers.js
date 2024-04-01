@@ -1,4 +1,4 @@
-import Proveedores from "../models/Proveedores.js"; // Asegúrate de importar el modelo de Proveedores
+import Proveedores from "../models/Proveedor.js"; // Asegúrate de importar el modelo de Proveedores
 
 export const getProveedores = async (req, res) => {
   try {
