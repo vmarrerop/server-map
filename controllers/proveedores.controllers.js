@@ -11,8 +11,8 @@ export const getProveedores = async (req, res) => {
 
 export const createProveedor = async (req, res) => {
   try {
-    const { nombre, productos, cantidadTotal } = req.body;
-    const nuevoProveedor = new Proveedores({ nombre, productos, cantidadTotal });
+    const { nombre, sede, productos, cantidadTotal } = req.body;
+    const nuevoProveedor = new Proveedores({ nombre, sede, productos, cantidadTotal });
     await nuevoProveedor.save();
     return res.json(nuevoProveedor);
   } catch (error) {

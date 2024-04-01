@@ -6,6 +6,10 @@ const proveedoresSchema = new mongoose.Schema(
           type: String,
           trim: true,
       },
+      sede: {
+        type: String,
+        trim: true,
+    },
       productos: [{
         nombre: {
           type: String,
