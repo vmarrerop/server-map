@@ -39,6 +39,10 @@ const postSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    sede: {
+      type: String,
+      trim: true,
+    },
     image: {
       public_id: String,
       url: String,
