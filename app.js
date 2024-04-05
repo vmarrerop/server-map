@@ -4,12 +4,14 @@ import fileUpload from "express-fileupload";
 import path from 'path'
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import postRoutes from "./routes/posts.routes.js";
+//import postRoutes from "./routes/posts.routhttps://accounts.google.com/b/0/AddMailServicees.js";
+import router from "./routes/posts.routes.js";
 import facturasRoutes from './routes/facturas.routes.js'
 import proveedoresRouter from "./routes/proveedores.routes.js";
 import empresaRouter from "./routes/usuarios.routes.js";
 import facturasProveedoresRouter from "./routes/facturasProveedores.routes.js";
 import facturasEmpleadoRouter from "./routes/facturaEmpleado.routes.js";
+import clientesRouter from "./routes/clientes.routes.js";
 import { connectDB } from "./db.js";
 import cors from 'cors';
 
@@ -37,12 +39,13 @@ app.use(express.static(path.join(__dirname, '../client/build')));
 app.use(cors());
 
 // Routes
-app.use("/api", postRoutes);
+app.use("/api", router);
 app.use("/api", facturasRoutes);
 app.use("/api", proveedoresRouter);
 app.use("/api", empresaRouter);
 app.use("/api", facturasProveedoresRouter);
 app.use("/api", facturasEmpleadoRouter);
+app.use("/api", clientesRouter);
 
 app.get("/", (req, res) => {
   res.send("Hola gente");

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const proveedoresSchema = new mongoose.Schema(
+const clienteSchema = new mongoose.Schema(
     {
       nombre: {
           type: String,
@@ -8,6 +8,10 @@ const proveedoresSchema = new mongoose.Schema(
       },
       sede: {
         type: String,
+        trim: true,
+    },
+    deuda: {
+        type: Number,
         trim: true,
     }
     },
@@ -17,4 +21,4 @@ const proveedoresSchema = new mongoose.Schema(
     }
   );
 
-export default mongoose.model("Proveedores", proveedoresSchema);
+export default mongoose.model("Cliente", clienteSchema);
