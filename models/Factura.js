@@ -6,6 +6,10 @@ const facturaSchema = new mongoose.Schema(
           type: String,
           trim: true,
       },
+      vendedor: {
+        type: String,
+        trim: true,
+    },
       sede: {
           type: String,
           trim: true,

@@ -26,6 +26,7 @@
     "google-auth-library": "^9.1.0",
     "http-errors": "^2.0.0",
     "mongoose": "^6.2.10",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "ws": "^8.16.0"
   }
 }
