@@ -6,6 +6,19 @@ const usuarioSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    sedes: [
+      {
+        nombre: {
+          type: String,
+          trim: true,
+        },
+        base: {
+          type: Number,
+          trim: true,
+          //unique: true,
+        },
+      }
+    ],
     empleados: [
       {
         nombre: {

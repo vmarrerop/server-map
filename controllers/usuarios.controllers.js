@@ -11,7 +11,7 @@ export const getUsuarios = async (req, res) => {
 
 export const createUsuario = async (req, res) => {
   try {
-    const { nombre, empleados } = req.body;
+    const { nombre, empleados, sedes } = req.body;
     
     // Comprobamos si ya existe un empleado con el mismo usuario
     const existingUsuario = await Empresa.findOne({ 'empleados.usuario': empleados.usuario });
@@ -25,7 +25,7 @@ export const createUsuario = async (req, res) => {
       return res.status(400).json({ message: "La cédula ya existe" });
     }
 
-    const newEmpresa = new Empresa({ nombre, empleados });
+    const newEmpresa = new Empresa({ nombre, empleados, sedes });
     await newEmpresa.save();
     return res.json(newEmpresa);
   } catch (error) {
@@ -56,10 +56,25 @@ export const getEmpleadoByUsername = async (req, res) => {
   }
 };
 
+
 export const updateUsuario = async (req, res) => {
   try {
     const { id } = req.params;
-    const updatedEmpresa = await Empresa.findByIdAndUpdate(id, { $set: req.body }, { new: true });
+    const { sedes } = req.body; // Obtén las sedes del cuerpo de la solicitud
+
+    // Encuentra la empresa por su ID
+    const empresa = await Empresa.findById(id);
+
+    if (!empresa) {
+      return res.status(404).json({ message: 'Empresa no encontrada' });
+    }
+
+    // Agrega las nuevas sedes a la empresa
+    empresa.sedes = sedes;
+
+    // Guarda los cambios
+    const updatedEmpresa = await empresa.save();
+
     return res.json(updatedEmpresa);
   } catch (error) {
     return res.status(500).json({ message: error.message });
