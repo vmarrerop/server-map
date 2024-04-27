@@ -10,6 +10,10 @@ const facturaProveedoresSchema = new mongoose.Schema(
           type: String,
           trim: true,
       },
+      vendedor: {
+        type: String,
+        trim: true,
+    },
       productos: [{
         nombre: {
           type: String,

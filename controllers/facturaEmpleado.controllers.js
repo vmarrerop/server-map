@@ -11,8 +11,8 @@ export const getFacturasEmpleado = async (req, res) => {
 
 export const createFacturaEmpleado = async (req, res) => {
   try {
-    const { nombre, dia, horaEntrada, horaSalida, tipoDia, horasTotales, totalGanado } = req.body;
-    const newFacturaEmpleado = new FacturaEmpleado({ nombre, dia, horaEntrada, horaSalida, tipoDia, horasTotales, totalGanado });
+    const { nombre, dia, vendedor, horaEntrada, horaSalida, tipoDia, horasTotales, totalGanado } = req.body;
+    const newFacturaEmpleado = new FacturaEmpleado({ nombre, dia, vendedor, horaEntrada, horaSalida, tipoDia, horasTotales, totalGanado });
     await newFacturaEmpleado.save();
     return res.json(newFacturaEmpleado);
   } catch (error) {

@@ -18,6 +18,10 @@ const facturaEmpleadoSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    vendedor: {
+      type: String,
+      trim: true,
+    },
     tipoDia: {
       type: String,
       enum: ['Ordinario', 'Dominical', 'Festivo', 'Falta'], // Agregar más tipos si es necesario
