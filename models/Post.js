@@ -41,11 +41,11 @@ const postSchema = new mongoose.Schema(
     },
     insumo: [
       {
-        nombre: {
+        nombreInsumo: {
           type: String,
           trim: true,
         },
-        cantidad: {
+        cantidadInsumo: {
           type: Number,
           trim: true,
           //unique: true,
