@@ -39,6 +39,19 @@ const postSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    insumo: [
+      {
+        nombre: {
+          type: String,
+          trim: true,
+        },
+        cantidad: {
+          type: Number,
+          trim: true,
+          //unique: true,
+        },
+      }
+    ],
     sede: {
       type: String,
       trim: true,
