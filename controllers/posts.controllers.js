@@ -60,6 +60,7 @@ export const updatePost = async (req, res) => {
     producto.unidad = req.body.unidad || producto.unidad;
     producto.cantidad = req.body.cantidad || producto.cantidad;
     producto.categoria = req.body.categoria || producto.categoria;
+    producto.sede = req.body.sede || producto.sede;
 
     // Actualizar la imagen solo si se proporciona una nueva imagen
     if (req.files?.image) {

@@ -48,6 +48,7 @@ const postSchema = new mongoose.Schema(
         cantidadInsumo: {
           type: Number,
           trim: true,
+          default: 1,
           //unique: true,
         },
       }
