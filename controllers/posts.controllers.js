@@ -13,7 +13,7 @@ export const getPosts = async (req, res) => {
 
 export const createPost = async (req, res) => {
   try {
-    const { title, description, precio, precioCompra, unidad, cantidad, categoria, proveedor, sede, insumos } = req.body;
+    const { title, description, precio, precioCompra, unidad, cantidad, categoria, proveedor, sede, insumo } = req.body;
 
     let image = null;
     if (req.files?.image) {
@@ -24,6 +24,14 @@ export const createPost = async (req, res) => {
         public_id: result.public_id,
       };
     }
+
+    // Procesa insumo para asegurar que es un array de objetos
+    const insumosProcesados = Array.isArray(insumo)
+      ? insumo.map(item => ({
+          nombreInsumo: item.nombreInsumo,
+          cantidadInsumo: item.cantidadInsumo || 1, // Valor predeterminado de cantidad
+        }))
+      : []; // Por defecto, insumo es un array vacío si no está definido correctamente
 
     const newPost = new Post({
       title,
@@ -36,7 +44,7 @@ export const createPost = async (req, res) => {
       categoria,
       proveedor,
       sede,
-      insumos, // Incluir los insumos en el nuevo post
+      insumo: insumosProcesados, // Aquí es donde se asignan los insumos procesados
     });
 
     await newPost.save();
