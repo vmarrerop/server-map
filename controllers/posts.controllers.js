@@ -46,6 +46,7 @@ export const createPost = async (req, res) => {
       sede,
       insumo: insumosProcesados,
     });
+    console.log("Datos recibidos:", req.body);
 
     await newPost.save();
     return res.json(newPost);
