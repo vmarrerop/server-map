@@ -35,23 +35,21 @@ const postSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    categoria: {  // Agregar la propiedad de categoría
+    categoria: { 
       type: String,
       trim: true,
     },
-    insumo: [
+    insumos: [
       {
         nombreInsumo: {
           type: String,
-          trim: true,
+          required: true,
         },
         cantidadInsumo: {
           type: Number,
-          trim: true,
-          default: 1,
-          //unique: true,
+          default: 1, // Valor predeterminado si no se proporciona cantidad
         },
-      }
+      },
     ],
     sede: {
       type: String,

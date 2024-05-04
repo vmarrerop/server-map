@@ -13,7 +13,7 @@ export const getPosts = async (req, res) => {
 
 export const createPost = async (req, res) => {
   try {
-    const { title, description, precio, precioCompra, unidad, cantidad, categoria, proveedor, sede, insumo } = req.body;
+    const { title, description, precio, precioCompra, unidad, cantidad, categoria, proveedor, sede, insumos } = req.body;
 
     let image = null;
     if (req.files?.image) {
@@ -24,14 +24,6 @@ export const createPost = async (req, res) => {
         public_id: result.public_id,
       };
     }
-
-    // Procesa insumo para asegurar que es un array de objetos
-    const insumosProcesados = Array.isArray(insumo)
-      ? insumo.map(item => ({
-          nombreInsumo: item.nombreInsumo,
-          cantidadInsumo: item.cantidadInsumo || 1, // Valor predeterminado de cantidad
-        }))
-      : []; // Por defecto, insumo es un array vacío si no está definido correctamente
 
     const newPost = new Post({
       title,
@@ -44,7 +36,7 @@ export const createPost = async (req, res) => {
       categoria,
       proveedor,
       sede,
-      insumo: insumosProcesados,
+      insumos, // Incluir los insumos en el nuevo post
     });
 
     await newPost.save();
@@ -84,18 +76,11 @@ export const updatePost = async (req, res) => {
     producto.cantidad = req.body.cantidad || producto.cantidad;
     producto.categoria = req.body.categoria || producto.categoria;
     producto.sede = req.body.sede || producto.sede;
-    if (req.body.insumo) {
-      // Procesa los insumos para asegurar que sea un array de objetos
-      const insumosProcesados = Array.isArray(req.body.insumo)
-        ? req.body.insumo.map(item => ({
-            nombreInsumo: item.nombreInsumo,
-            cantidadInsumo: item.cantidadInsumo || 1, // Valor predeterminado de cantidad
-          }))
-        : []; // Por defecto, insumo es un array vacío si no está definido correctamente
     
-      producto.insumo = insumosProcesados;
+    // Actualizar los insumos si se proporcionan en la solicitud
+    if (req.body.insumos) {
+      producto.insumos = req.body.insumos;
     }
-    
 
     // Actualizar la imagen solo si se proporciona una nueva imagen
     if (req.files?.image) {
@@ -123,6 +108,7 @@ export const updatePost = async (req, res) => {
     res.status(500).json({ message: "Error al actualizar el producto" });
   }
 };
+
 
 export const removePost = async (req, res) => {
   try {
