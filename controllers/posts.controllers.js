@@ -61,6 +61,9 @@ export const updatePost = async (req, res) => {
     producto.cantidad = req.body.cantidad || producto.cantidad;
     producto.categoria = req.body.categoria || producto.categoria;
     producto.sede = req.body.sede || producto.sede;
+    if (req.body.insumo) {
+      producto.insumo = req.body.insumo; // Asegúrate de que el frontend envía el formato correcto
+    }
 
     // Actualizar la imagen solo si se proporciona una nueva imagen
     if (req.files?.image) {
