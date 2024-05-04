@@ -15,6 +15,15 @@ export const createPost = async (req, res) => {
   try {
     const { title, description, precio, precioCompra, unidad, cantidad, categoria, proveedor, sede, insumo } = req.body;
 
+    // Analiza `insumo` si es una cadena JSON
+    let insumosProcesados;
+    try {
+      insumosProcesados = JSON.parse(insumo);
+    } catch (error) {
+      // Devuelve un error si el JSON no es válido
+      return res.status(400).json({ message: "Formato de insumo inválido" });
+    }
+
     let image = null;
     if (req.files?.image) {
       const result = await uploadImage(req.files.image.tempFilePath);
@@ -24,14 +33,6 @@ export const createPost = async (req, res) => {
         public_id: result.public_id,
       };
     }
-
-    // Procesa insumo para asegurar que es un array de objetos
-    const insumosProcesados = Array.isArray(insumo)
-      ? insumo.map(item => ({
-          nombreInsumo: item.nombreInsumo,
-          cantidadInsumo: item.cantidadInsumo || 1, // Valor predeterminado de cantidad
-        }))
-      : []; // Por defecto, insumo es un array vacío si no está definido correctamente
 
     const newPost = new Post({
       title,
@@ -44,9 +45,8 @@ export const createPost = async (req, res) => {
       categoria,
       proveedor,
       sede,
-      insumo: insumosProcesados,
+      insumo: insumosProcesados, // Usa el array procesado
     });
-    console.log("Datos recibidos:", req.body);
 
     await newPost.save();
     return res.json(newPost);
