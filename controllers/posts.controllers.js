@@ -44,7 +44,7 @@ export const createPost = async (req, res) => {
       categoria,
       proveedor,
       sede,
-      insumo: insumosProcesados, // Aquí es donde se asignan los insumos procesados
+      insumo: insumosProcesados,
     });
 
     await newPost.save();
@@ -84,11 +84,18 @@ export const updatePost = async (req, res) => {
     producto.cantidad = req.body.cantidad || producto.cantidad;
     producto.categoria = req.body.categoria || producto.categoria;
     producto.sede = req.body.sede || producto.sede;
+    if (req.body.insumo) {
+      // Procesa los insumos para asegurar que sea un array de objetos
+      const insumosProcesados = Array.isArray(req.body.insumo)
+        ? req.body.insumo.map(item => ({
+            nombreInsumo: item.nombreInsumo,
+            cantidadInsumo: item.cantidadInsumo || 1, // Valor predeterminado de cantidad
+          }))
+        : []; // Por defecto, insumo es un array vacío si no está definido correctamente
     
-    // Actualizar los insumos si se proporcionan en la solicitud
-    if (req.body.insumos) {
-      producto.insumos = req.body.insumos;
+      producto.insumo = insumosProcesados;
     }
+    
 
     // Actualizar la imagen solo si se proporciona una nueva imagen
     if (req.files?.image) {
@@ -116,7 +123,6 @@ export const updatePost = async (req, res) => {
     res.status(500).json({ message: "Error al actualizar el producto" });
   }
 };
-
 
 export const removePost = async (req, res) => {
   try {

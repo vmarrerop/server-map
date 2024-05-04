@@ -39,7 +39,7 @@ const postSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    insumos: [
+    insumo: [
       {
         nombreInsumo: {
           type: String,
