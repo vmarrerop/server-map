@@ -15,8 +15,16 @@ export const createPost = async (req, res) => {
   try {
     const { title, description, precio, precioCompra, unidad, cantidad, categoria, proveedor, sede, insumo } = req.body;
 
-    // Analiza `insumo` si es una cadena JSON
-    //
+    let insumosProcesados;
+    if (typeof insumo === 'string') {
+      try {
+        insumosProcesados = JSON.parse(insumo);
+      } catch (error) {
+        return res.status(400).json({ message: "Formato de insumo inválido" });
+      }
+    } else {
+      insumosProcesados = insumo; // Si ya es un arreglo, úsalo directamente
+    }
 
     let image = null;
     if (req.files?.image) {
@@ -48,7 +56,6 @@ export const createPost = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-
 
 export const getPost = async (req, res) => {
   try {
