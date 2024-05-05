@@ -15,6 +15,7 @@ export const createPost = async (req, res) => {
   try {
     console.log("Datos recibidos:", req.body);
     const { title, description, precio, precioCompra, unidad, cantidad, categoria, proveedor, sede, insumos } = req.body;
+
     let image = null;
     if (req.files?.image) {
       const result = await uploadImage(req.files.image.tempFilePath);
@@ -24,21 +25,33 @@ export const createPost = async (req, res) => {
         public_id: result.public_id,
       };
     }
-    
-    // Transforma los insumos en el formato adecuado
-    const insumosFormatted = insumos.map(insumo => ({
-      nombreInsumo: insumo.nombreInsumo,
-      cantidadInsumo: insumo.cantidadInsumo,
-    }));
-    console.log("Datos recibidos:", req.body);
-    const newPost = new Post({ title, description, image, precio, precioCompra, unidad, cantidad, categoria, proveedor, sede, insumos: insumosFormatted });
-    console.log("Datos recibidos:", req.body);
+
+    // Convertir `insumos` a un array si es un string JSON
+    const insumosFormatted = insumos ? JSON.parse(insumos) : [];
+
+    // Crear un nuevo post con los datos convertidos correctamente
+    const newPost = new Post({
+      title,
+      description,
+      image,
+      precio: parseFloat(precio), // Asegurarse de que precio sea numérico
+      precioCompra: parseFloat(precioCompra), // Asegurarse de que precioCompra sea numérico
+      unidad,
+      cantidad: parseInt(cantidad, 10), // Asegurarse de que cantidad sea numérico
+      categoria,
+      proveedor,
+      sede,
+      insumos: insumosFormatted // Asegurarse de que insumos esté correctamente formateado
+    });
+
     await newPost.save();
     return res.json(newPost);
   } catch (error) {
+    console.error("Error al crear el post:", error); // Log detallado del error
     return res.status(500).json({ message: error.message });
   }
 };
+
 
 export const getPost = async (req, res) => {
   try {
