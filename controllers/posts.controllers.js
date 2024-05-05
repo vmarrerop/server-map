@@ -13,6 +13,7 @@ export const getPosts = async (req, res) => {
 
 export const createPost = async (req, res) => {
   try {
+    console.log("Datos recibidos:", req.body);
     const { title, description, precio, precioCompra, unidad, cantidad, categoria, proveedor, sede, insumos } = req.body;
     let image = null;
     if (req.files?.image) {
@@ -29,7 +30,7 @@ export const createPost = async (req, res) => {
       nombreInsumo: insumo.nombreInsumo,
       cantidadInsumo: insumo.cantidadInsumo,
     }));
-    
+    console.log("Datos recibidos:", req.body);
     const newPost = new Post({ title, description, image, precio, precioCompra, unidad, cantidad, categoria, proveedor, sede, insumos: insumosFormatted });
     console.log("Datos recibidos:", req.body);
     await newPost.save();
