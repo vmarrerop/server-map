@@ -13,7 +13,7 @@ export const getPosts = async (req, res) => {
 
 export const createPost = async (req, res) => {
   try {
-    const { title, description, precio, precioCompra, unidad, cantidad, categoria, proveedor, sede, insumos } = req.body;
+    const { title, description, precio, precioCompra, unidad, cantidad,cantidadPorcion, categoria, proveedor, sede, insumos } = req.body;
 
     let image = null;
     if (req.files?.image) {
@@ -36,6 +36,7 @@ export const createPost = async (req, res) => {
       precio: parseFloat(precio), // Asegurarse de que precio sea numérico
       precioCompra: parseFloat(precioCompra), // Asegurarse de que precioCompra sea numérico
       unidad,
+      cantidadPorcion: parseInt(cantidadPorcion, 10),
       cantidad: parseInt(cantidad, 10), // Asegurarse de que cantidad sea numérico
       categoria,
       proveedor,
@@ -80,6 +81,7 @@ export const updatePost = async (req, res) => {
     producto.cantidad = req.body.cantidad || producto.cantidad;
     producto.categoria = req.body.categoria || producto.categoria;
     producto.sede = req.body.sede || producto.sede;
+    producto.cantidadPorcion = req.body.cantidadPorcion || producto.cantidadPorcion;
     
     if (req.files?.image) {
       if (producto.image.public_id) {

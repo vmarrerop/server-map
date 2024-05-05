@@ -42,6 +42,11 @@ const postSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    cantidadPorcion: {
+      type: Number,
+      required: true,
+      trim: true,
+    },
     cantidad: {
       type: Number,
       required: true,
