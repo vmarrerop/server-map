@@ -55,6 +55,7 @@ export const createPost = async (req, res) => {
   }
 };
 
+
 export const getPost = async (req, res) => {
   try {
     const { id } = req.params;
