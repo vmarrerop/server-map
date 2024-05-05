@@ -31,6 +31,7 @@ export const createPost = async (req, res) => {
     }));
     
     const newPost = new Post({ title, description, image, precio, precioCompra, unidad, cantidad, categoria, proveedor, sede, insumos: insumosFormatted });
+    console.log("Datos recibidos:", req.body);
     await newPost.save();
     return res.json(newPost);
   } catch (error) {
