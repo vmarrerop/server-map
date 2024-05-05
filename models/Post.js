@@ -1,5 +1,17 @@
 import mongoose from "mongoose";
 
+// Esquema de insumo para reutilización
+const insumoSchema = new mongoose.Schema({
+  nombreInsumo: {
+    type: String,
+    trim: true,
+  },
+  cantidadInsumo: {
+    type: Number,
+    trim: true,
+  }
+});
+
 const postSchema = new mongoose.Schema(
   {
     title: {
@@ -35,7 +47,7 @@ const postSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    categoria: {  // Agregar la propiedad de categoría
+    categoria: {
       type: String,
       trim: true,
     },
@@ -46,7 +58,8 @@ const postSchema = new mongoose.Schema(
     image: {
       public_id: String,
       url: String,
-    }
+    },
+    insumos: [insumoSchema], // Agrega un arreglo de insumos
   },
   {
     timestamps: true,

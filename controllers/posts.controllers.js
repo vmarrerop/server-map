@@ -13,7 +13,7 @@ export const getPosts = async (req, res) => {
 
 export const createPost = async (req, res) => {
   try {
-    const { title, description, precio, precioCompra, unidad, cantidad, categoria, proveedor, sede } = req.body;
+    const { title, description, precio, precioCompra, unidad, cantidad, categoria, proveedor, sede, insumos } = req.body;
     let image = null;
     if (req.files?.image) {
       const result = await uploadImage(req.files.image.tempFilePath);
@@ -23,13 +23,21 @@ export const createPost = async (req, res) => {
         public_id: result.public_id,
       };
     }
-    const newPost = new Post({ title, description, image, precio, precioCompra, unidad, cantidad, categoria, proveedor, sede});
+    
+    // Transforma los insumos en el formato adecuado
+    const insumosFormatted = insumos.map(insumo => ({
+      nombreInsumo: insumo.nombreInsumo,
+      cantidadInsumo: insumo.cantidadInsumo,
+    }));
+    
+    const newPost = new Post({ title, description, image, precio, precioCompra, unidad, cantidad, categoria, proveedor, sede, insumos: insumosFormatted });
     await newPost.save();
     return res.json(newPost);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
+
 export const getPost = async (req, res) => {
   try {
     const { id } = req.params;
@@ -44,13 +52,11 @@ export const getPost = async (req, res) => {
 export const updatePost = async (req, res) => {
   try {
     const { id } = req.params;
-    // Buscar el producto a actualizar
     const producto = await Post.findById(id);
     if (!producto) {
       return res.status(404).json({ message: "Producto no encontrado" });
     }
 
-    // Actualizar la información del producto excepto la imagen
     producto.title = req.body.title || producto.title;
     producto.description = req.body.description || producto.description;
     producto.proveedor = req.body.proveedor || producto.proveedor;
@@ -61,33 +67,33 @@ export const updatePost = async (req, res) => {
     producto.categoria = req.body.categoria || producto.categoria;
     producto.sede = req.body.sede || producto.sede;
     
-
-    // Actualizar la imagen solo si se proporciona una nueva imagen
     if (req.files?.image) {
-      // Eliminar la imagen existente si existe
       if (producto.image.public_id) {
-        // Implementa la lógica para eliminar la imagen de tu almacenamiento
-        // Por ejemplo, con Cloudinary puedes usar el método destroy
-        await cloudinary.uploader.destroy(producto.image.public_id);
+        await deleteImage(producto.image.public_id);
       }
-      // Subir la nueva imagen
-      const result = await cloudinary.uploader.upload(req.files.image.tempFilePath);
+      const result = await uploadImage(req.files.image.tempFilePath);
       producto.image = {
         public_id: result.public_id,
         url: result.secure_url,
       };
     }
 
-    // Guardar los cambios en la base de datos
-    await producto.save();
+    // Transforma los insumos y actualiza
+    if (req.body.insumos) {
+      producto.insumos = req.body.insumos.map(insumo => ({
+        nombreInsumo: insumo.nombreInsumo,
+        cantidadInsumo: insumo.cantidadInsumo,
+      }));
+    }
 
-    // Devolver la respuesta
+    await producto.save();
     res.status(200).json({ message: "Producto actualizado correctamente", producto });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error al actualizar el producto" });
   }
 };
+
 
 export const removePost = async (req, res) => {
   try {
