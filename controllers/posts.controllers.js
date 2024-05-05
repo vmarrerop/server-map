@@ -13,19 +13,7 @@ export const getPosts = async (req, res) => {
 
 export const createPost = async (req, res) => {
   try {
-    const { title, description, precio, precioCompra, unidad, cantidad, categoria, proveedor, sede, insumo } = req.body;
-
-    let insumosProcesados;
-    if (typeof insumo === 'string') {
-      try {
-        insumosProcesados = JSON.parse(insumo);
-      } catch (error) {
-        return res.status(400).json({ message: "Formato de insumo inválido" });
-      }
-    } else {
-      insumosProcesados = insumo; // Si ya es un arreglo, úsalo directamente
-    }
-
+    const { title, description, precio, precioCompra, unidad, cantidad, categoria, proveedor, sede } = req.body;
     let image = null;
     if (req.files?.image) {
       const result = await uploadImage(req.files.image.tempFilePath);
@@ -35,28 +23,13 @@ export const createPost = async (req, res) => {
         public_id: result.public_id,
       };
     }
-
-    const newPost = new Post({
-      title,
-      description,
-      image,
-      precio,
-      precioCompra,
-      unidad,
-      cantidad,
-      categoria,
-      proveedor,
-      sede,
-      insumo: insumosProcesados, // Usa el array procesado
-    });
-
+    const newPost = new Post({ title, description, image, precio, precioCompra, unidad, cantidad, categoria, proveedor, sede});
     await newPost.save();
     return res.json(newPost);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
-
 export const getPost = async (req, res) => {
   try {
     const { id } = req.params;
@@ -87,17 +60,6 @@ export const updatePost = async (req, res) => {
     producto.cantidad = req.body.cantidad || producto.cantidad;
     producto.categoria = req.body.categoria || producto.categoria;
     producto.sede = req.body.sede || producto.sede;
-    if (req.body.insumo) {
-      // Procesa los insumos para asegurar que sea un array de objetos
-      const insumosProcesados = Array.isArray(req.body.insumo)
-        ? req.body.insumo.map(item => ({
-            nombreInsumo: item.nombreInsumo,
-            cantidadInsumo: item.cantidadInsumo || 1, // Valor predeterminado de cantidad
-          }))
-        : []; // Por defecto, insumo es un array vacío si no está definido correctamente
-    
-      producto.insumo = insumosProcesados;
-    }
     
 
     // Actualizar la imagen solo si se proporciona una nueva imagen
