@@ -16,13 +16,7 @@ export const createPost = async (req, res) => {
     const { title, description, precio, precioCompra, unidad, cantidad, categoria, proveedor, sede, insumo } = req.body;
 
     // Analiza `insumo` si es una cadena JSON
-    let insumosProcesados;
-    try {
-      insumosProcesados = JSON.parse(insumo);
-    } catch (error) {
-      // Devuelve un error si el JSON no es válido
-      return res.status(400).json({ message: "Formato de insumo inválido" });
-    }
+    //
 
     let image = null;
     if (req.files?.image) {
