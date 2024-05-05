@@ -36,7 +36,7 @@ export const createPost = async (req, res) => {
       precio: parseFloat(precio), // Asegurarse de que precio sea numérico
       precioCompra: parseFloat(precioCompra), // Asegurarse de que precioCompra sea numérico
       unidad,
-      cantidadPorcion: parseInt(cantidadPorcion, 10),
+      cantidadPorcion,
       cantidad: parseInt(cantidad, 10), // Asegurarse de que cantidad sea numérico
       categoria,
       proveedor,
