@@ -13,7 +13,6 @@ export const getPosts = async (req, res) => {
 
 export const createPost = async (req, res) => {
   try {
-    console.log("Datos recibidos:", req.body);
     const { title, description, precio, precioCompra, unidad, cantidad, categoria, proveedor, sede, insumos } = req.body;
 
     let image = null;
