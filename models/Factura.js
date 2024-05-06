@@ -19,6 +19,14 @@ const facturaSchema = new mongoose.Schema(
           type: String,
           trim: true,
         },
+        nombreProteina: {
+          type: String,
+          trim: true,
+        },
+        categoria: {
+          type: String,
+          trim: true,
+        },
         cantidad: {
           type: Number,
           trim: true,
