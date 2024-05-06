@@ -14,6 +14,10 @@ const cocinaSchema = new mongoose.Schema(
           type: String,
           trim: true,
       },
+      estado: {
+        type: String,
+        trim: true,
+    },
       productos: [{
         nombre: {
           type: String,
