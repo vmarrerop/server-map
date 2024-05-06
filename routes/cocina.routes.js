@@ -9,14 +9,14 @@ import {
 
 const cocinaRouter = Router();
 
-cocinaRouter.get("/facturas", getFacturas);
+cocinaRouter.get("/cocinas", getFacturas);
 
-cocinaRouter.get("/facturas/:id", getFactura);
+cocinaRouter.get("/cocinas/:id", getFactura);
 
-cocinaRouter.post("/facturas", createFactura);
+cocinaRouter.post("/cocinas", createFactura);
 
-cocinaRouter.put("/facturas/:id", updateFactura);
+cocinaRouter.put("/cocinas/:id", updateFactura);
 
-cocinaRouter.delete("/facturas/:id", removeFactura);
+cocinaRouter.delete("/cocinas/:id", removeFactura);
 
 export default cocinaRouter;
