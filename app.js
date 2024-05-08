@@ -48,39 +48,26 @@ app.use("/api", facturasEmpleadoRouter);
 app.use("/api", clientesRouter);
 app.use("/api", cocinaRouter);
 
-// SSE Route
-let connections = []; // This will store all active connections
 
+// SSE Route: Mantenimiento de conexiones SSE
+let connections = []; // Almacena todas las conexiones activas
 app.get('/events', (req, res) => {
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
-
-    // Add this connection to the list of active connections
     connections.push(res);
 
-    const sendEvent = (data) => {
-        connections.forEach(conn => conn.write(`data: ${JSON.stringify(data)}\n\n`));
-    };
-
-    // Send initial data or a connection confirmation message
-    sendEvent({ message: "Connected to SSE", timestamp: new Date() });
-
     req.on('close', () => {
-        // Remove this response from connections array when connection closes
         connections = connections.filter(conn => conn !== res);
         res.end();
     });
 });
 
-// Example of using sendEvent in your data manipulation routes
-app.post('/api/cocinas', async (req, res) => {
-    // handle the creation of cocina
-    // on success:
-    const newData = await fetchAllCocinaData(); // Assuming this fetches updated data
-    connections.forEach(conn => conn.write(`data: ${JSON.stringify(newData)}\n\n`)); // broadcast updated data
-    res.status(201).json(newData);
-});
+// Función para enviar eventos a todas las conexiones activas
+export const sendEventToAll = (data) => {
+    connections.forEach(conn => conn.write(`data: ${JSON.stringify(data)}\n\n`));
+};
+
 
 app.get("/", (req, res) => {
   res.send("Hola gente");
