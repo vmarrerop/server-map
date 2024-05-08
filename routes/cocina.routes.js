@@ -1,6 +1,5 @@
 import { Router } from "express";
 import {
-  getFactura,
   createFactura,
   updateFactura,
   removeFactura,
@@ -11,7 +10,6 @@ const cocinaRouter = Router();
 
 cocinaRouter.get("/cocinas", getFacturas);
 
-cocinaRouter.get("/cocinas/:id", getFactura);
 
 cocinaRouter.post("/cocinas", createFactura);
 
