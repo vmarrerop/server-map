@@ -12,8 +12,8 @@ export const getFacturas = async (req, res) => {
   
   export const createFactura = async (req, res) => {
     try {
-      const { cliente, vendedor, sede, productos, observacion, estado } = req.body;
-      const newFactura = new Factura({ cliente, vendedor, sede, productos, observacion, estado });
+      const { cliente, vendedor, sede, productos, observacion, estado, mesa, domicilio } = req.body;
+      const newFactura = new Factura({ cliente, vendedor, sede, productos, observacion, estado, mesa, domicilio });
       await newFactura.save();
   
       // Enviar actualización a todos los clientes
