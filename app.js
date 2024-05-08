@@ -1,11 +1,11 @@
 import express from "express";
 import morgan from "morgan";
 import fileUpload from "express-fileupload";
-import path from 'path'
+import path from 'path';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import router from "./routes/posts.routes.js";
-import facturasRoutes from './routes/facturas.routes.js'
+import facturasRoutes from './routes/facturas.routes.js';
 import proveedoresRouter from "./routes/proveedores.routes.js";
 import empresaRouter from "./routes/usuarios.routes.js";
 import facturasProveedoresRouter from "./routes/facturasProveedores.routes.js";
@@ -21,7 +21,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export const MONGODB_URI =
   process.env.MONGODB_URI ||
   "mongodb+srv://jVicente:12345@cluster0.u8fdjxz.mongodb.net/?retryWrites=true&w=majority";
-export const PORT = process.env.PORT || 3000
+export const PORT = process.env.PORT || 3000;
 
 app.use(morgan("dev"));
 app.use(express.json());
@@ -48,12 +48,33 @@ app.use("/api", facturasEmpleadoRouter);
 app.use("/api", clientesRouter);
 app.use("/api", cocinaRouter);
 
+// SSE Route
+app.get('/events', (req, res) => {
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+
+    const sendEvent = (data) => {
+        res.write(`data: ${JSON.stringify(data)}\n\n`);
+    };
+
+    const intervalId = setInterval(() => {
+        sendEvent({ message: "Update from server", timestamp: new Date() });
+    }, 5000); // Enviar un evento cada 10 segundos
+
+    req.on('close', () => {
+        clearInterval(intervalId);
+        res.end();
+    });
+});
+
 app.get("/", (req, res) => {
   res.send("Hola gente");
 })
 
 connectDB();
-app.listen(PORT);
-console.log("Server on port", PORT);
+app.listen(PORT, () => {
+    console.log("Server on port", PORT);
+});
 
 export { app };
