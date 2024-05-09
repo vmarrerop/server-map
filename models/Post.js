@@ -36,6 +36,10 @@ const postSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    tipo: {
+      type: String,
+      trim: true,
+    },
     precioCompra: {
       type: Number,
       required: true,
