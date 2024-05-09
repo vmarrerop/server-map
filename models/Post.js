@@ -6,6 +6,10 @@ const insumoSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  tipo: {
+    type: String,
+    trim: true,
+  },
   cantidadInsumo: {
     type: Number,
     trim: true,
