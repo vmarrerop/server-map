@@ -44,10 +44,16 @@ const facturaSchema = new mongoose.Schema(
         type: Number,
         trim: true,
       },
-      metodoPago: {
-        type: String,
-        trim: true,
-      },
+      metodosPago: [{
+        metodo: {
+          type: String,
+          trim: true,
+        },
+        cantidad: {
+          type: Number,
+          trim: true,
+        },
+      }],
       observacion: {
         type: String,
         trim: true,
