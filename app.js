@@ -5,6 +5,7 @@ import path from 'path';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import nodemailer from 'nodemailer';
+import { google } from 'googleapis';
 import router from "./routes/posts.routes.js";
 import facturasRoutes from './routes/facturas.routes.js';
 import proveedoresRouter from "./routes/proveedores.routes.js";
@@ -68,6 +69,17 @@ export const sendEventToAll = (data) => {
     connections.forEach(conn => conn.write(`data: ${JSON.stringify(data)}\n\n`));
 };
 
+// Configurar OAuth2
+const oAuth2Client = new google.auth.OAuth2(
+  '337713739163-7gnjvt6ghlpb94f9f84fdgnli0tivlt7.apps.googleusercontent.com', // Reemplaza con tu Client ID
+  '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', // Reemplaza con tu Client Secret
+  'https://developers.google.com/oauthplayground' // Reemplaza con tu Redirect URI
+);
+
+oAuth2Client.setCredentials({
+  refresh_token: '1//04m-5mvDxG5tHCgYIARAAGAQSNwF-L9IrSJVa3mmUzP-o1XgMEv6RPi9wx8YRmAaiJ4Ajm1_tsWC1kONFq7qmetz8Qvmg7dKRnpo' // Reemplaza con tu Refresh Token
+});
+
 // Ruta para enviar la factura por correo
 app.post('/api/enviar-factura', async (req, res) => {
     const { email } = req.body;
@@ -77,31 +89,39 @@ app.post('/api/enviar-factura', async (req, res) => {
         return res.status(400).send('Correo y PDF son requeridos.');
     }
 
-    let transporter = nodemailer.createTransport({
-        service: 'gmail', // Cambia esto a tu proveedor de correo
-        auth: {
-            user: 'jovimapo.21@gmail.com',
-            pass: 'j0s3v1c3nt3'
-        }
-    });
-
-    let mailOptions = {
-        from: 'jovimapo.21@gmail.com',
-        to: email,
-        subject: 'Factura',
-        text: 'Adjunto encontrará su factura.',
-        attachments: [
-            {
-                filename: 'factura.pdf',
-                content: pdf.data,
-                contentType: 'application/pdf'
-            }
-        ]
-    };
-
     try {
-        console.log('Enviando correo a', email);
+        const accessToken = await oAuth2Client.getAccessToken();
+
+        let transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+              type: 'OAuth2',
+              user: 'jovimapo.21@gmail.com', // Reemplaza con tu correo
+              clientId: '337713739163-7gnjvt6ghlpb94f9f84fdgnli0tivlt7.apps.googleusercontent.com',
+              clientSecret: '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',
+              refreshToken: '1//04m-5mvDxG5tHCgYIARAAGAQSNwF-L9IrSJVa3mmUzP-o1XgMEv6RPi9wx8YRmAaiJ4Ajm1_tsWC1kONFq7qmetz8Qvmg7dKRnpo',
+              accessToken: accessToken.token
+          }
+      });
+
+        let mailOptions = {
+            from: 'your-email@gmail.com', // Reemplaza con tu correo
+            to: email,
+            subject: 'Factura',
+            text: 'Adjunto encontrará su factura.',
+            attachments: [
+                {
+                    filename: 'factura.pdf',
+                    content: pdf.data,
+                    contentType: 'application/pdf'
+                }
+            ]
+        };
+
+        console.log('Enviando correo a:', email);
+        console.log('Adjuntando archivo:', pdf.name, pdf.size, 'bytes');
         await transporter.sendMail(mailOptions);
+        console.log('Correo enviado con éxito');
         res.status(200).send('Factura enviada!');
     } catch (error) {
         console.error('Error al enviar correo:', error);
