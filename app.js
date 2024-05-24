@@ -4,6 +4,7 @@ import fileUpload from "express-fileupload";
 import path from 'path';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
+import nodemailer from 'nodemailer';
 import router from "./routes/posts.routes.js";
 import facturasRoutes from './routes/facturas.routes.js';
 import proveedoresRouter from "./routes/proveedores.routes.js";
@@ -48,7 +49,6 @@ app.use("/api", facturasEmpleadoRouter);
 app.use("/api", clientesRouter);
 app.use("/api", cocinaRouter);
 
-
 // SSE Route: Mantenimiento de conexiones SSE
 let connections = []; // Almacena todas las conexiones activas
 app.get('/events', (req, res) => {
@@ -68,6 +68,44 @@ export const sendEventToAll = (data) => {
     connections.forEach(conn => conn.write(`data: ${JSON.stringify(data)}\n\n`));
 };
 
+// Ruta para enviar la factura por correo
+app.post('/api/enviar-factura', async (req, res) => {
+    const { email } = req.body;
+    const pdf = req.files.pdf;
+
+    if (!email || !pdf) {
+        return res.status(400).send('Correo y PDF son requeridos.');
+    }
+
+    let transporter = nodemailer.createTransport({
+        service: 'gmail', // Cambia esto a tu proveedor de correo
+        auth: {
+            user: 'tu-email@gmail.com',
+            pass: 'tu-contraseña'
+        }
+    });
+
+    let mailOptions = {
+        from: 'tu-email@gmail.com',
+        to: email,
+        subject: 'Factura',
+        text: 'Adjunto encontrará su factura.',
+        attachments: [
+            {
+                filename: 'factura.pdf',
+                content: pdf.data,
+                contentType: 'application/pdf'
+            }
+        ]
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        res.status(200).send('Factura enviada!');
+    } catch (error) {
+        res.status(500).send(error.toString());
+    }
+});
 
 app.get("/", (req, res) => {
   res.send("Hola gente");
