@@ -100,9 +100,11 @@ app.post('/api/enviar-factura', async (req, res) => {
     };
 
     try {
+        console.log('Enviando correo a', email);
         await transporter.sendMail(mailOptions);
         res.status(200).send('Factura enviada!');
     } catch (error) {
+        console.error('Error al enviar correo:', error);
         res.status(500).send(error.toString());
     }
 });
