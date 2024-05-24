@@ -80,13 +80,13 @@ app.post('/api/enviar-factura', async (req, res) => {
     let transporter = nodemailer.createTransport({
         service: 'gmail', // Cambia esto a tu proveedor de correo
         auth: {
-            user: 'tu-email@gmail.com',
-            pass: 'tu-contraseña'
+            user: 'jovimapo.21@gmail.com',
+            pass: 'j0s3v1c3nt3'
         }
     });
 
     let mailOptions = {
-        from: 'tu-email@gmail.com',
+        from: 'jovimapo.21@gmail.com',
         to: email,
         subject: 'Factura',
         text: 'Adjunto encontrará su factura.',
