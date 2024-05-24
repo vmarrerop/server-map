@@ -105,7 +105,7 @@ app.post('/api/enviar-factura', async (req, res) => {
       });
 
         let mailOptions = {
-            from: 'your-email@gmail.com', // Reemplaza con tu correo
+            from: 'jovimapo.21@gmail.com', // Reemplaza con tu correo
             to: email,
             subject: 'Factura',
             text: 'Adjunto encontrará su factura.',
