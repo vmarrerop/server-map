@@ -1,5 +1,6 @@
 import express from "express";
 import morgan from "morgan";
+import fileUpload from "express-fileupload";
 import path from 'path';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -26,6 +27,13 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.use(
+  fileUpload({
+    tempFileDir: "./upload",
+    useTempFiles: true,
+  })
+);
+
 app.use(express.static(path.join(__dirname, '../client/build')));
 app.use(cors());
 
@@ -40,21 +48,22 @@ app.use("/api", clientesRouter);
 app.use("/api", cocinaRouter);
 
 // SSE Route: Mantenimiento de conexiones SSE
-let connections = [];
+let connections = []; // Almacena todas las conexiones activas
 app.get('/events', (req, res) => {
-  res.setHeader('Content-Type', 'text/event-stream');
-  res.setHeader('Cache-Control', 'no-cache');
-  res.setHeader('Connection', 'keep-alive');
-  connections.push(res);
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+    connections.push(res);
 
-  req.on('close', () => {
-    connections = connections.filter(conn => conn !== res);
-    res.end();
-  });
+    req.on('close', () => {
+        connections = connections.filter(conn => conn !== res);
+        res.end();
+    });
 });
 
+// Función para enviar eventos a todas las conexiones activas
 export const sendEventToAll = (data) => {
-  connections.forEach(conn => conn.write(`data: ${JSON.stringify(data)}\n\n`));
+    connections.forEach(conn => conn.write(`data: ${JSON.stringify(data)}\n\n`));
 };
 
 const oAuth2Client = new google.auth.OAuth2(
