@@ -20,7 +20,7 @@ const app = express();
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://jVicente:12345@cluster0.u8fdjxz.mongodb.net/?retryWrites=true&w=majority";
-export const PORT = process.env.PORT || 3001;
+export const PORT = process.env.PORT || 3000;
 
 app.use(morgan("dev"));
 app.use(express.json());
