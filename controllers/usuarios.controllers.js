@@ -12,15 +12,15 @@ export const getUsuarios = async (req, res) => {
 export const createUsuario = async (req, res) => {
   try {
     const { nombre, empleados, sedes } = req.body;
-    
+
     // Comprobamos si ya existe un empleado con el mismo usuario
-    const existingUsuario = await Empresa.findOne({ 'empleados.usuario': empleados.usuario });
+    const existingUsuario = await Empresa.findOne({ 'empleados.usuario': empleados?.usuario });
     if (existingUsuario) {
       return res.status(400).json({ message: "El usuario ya existe" });
     }
 
     // Comprobamos si ya existe un empleado con la misma cédula
-    const existingCedula = await Empresa.findOne({ 'empleados.cedula': empleados.cedula });
+    const existingCedula = await Empresa.findOne({ 'empleados.cedula': empleados?.cedula });
     if (existingCedula) {
       return res.status(400).json({ message: "La cédula ya existe" });
     }

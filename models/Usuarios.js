@@ -1,7 +1,15 @@
 import mongoose from "mongoose";
+import { v4 as uuidv4 } from 'uuid';
 
 const usuarioSchema = new mongoose.Schema(
   {
+    empresaId: {
+      type: String,
+      unique: true,
+      default: uuidv4, // Usar uuidv4 para generar un identificador único
+      required: true,
+    },
+
     nombre: {
       type: String,
       trim: true,
