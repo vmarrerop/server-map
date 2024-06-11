@@ -2,10 +2,17 @@ import mongoose from "mongoose";
 
 const usuarioSchema = new mongoose.Schema(
   {
+    empresaId: {
+      type: String,
+      unique: true,
+      required: true,
+    },
+
     nombre: {
       type: String,
       trim: true,
     },
+
     sedes: [
       {
         nombre: {
@@ -19,6 +26,7 @@ const usuarioSchema = new mongoose.Schema(
         },
       }
     ],
+    
     empleados: [
       {
         nombre: {

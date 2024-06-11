@@ -14,18 +14,25 @@ import facturasProveedoresRouter from "./routes/facturasProveedores.routes.js";
 import facturasEmpleadoRouter from "./routes/facturaEmpleado.routes.js";
 import clientesRouter from "./routes/clientes.routes.js";
 import cocinaRouter from "./routes/cocina.routes.js";
+import stripeRouter from "./routes/stripe.routes.js";
 import { connectDB } from "./db.js";
 import cors from 'cors';
+import dotenv from 'dotenv';
 
 const app = express();
+dotenv.config();
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://jVicente:12345@cluster0.u8fdjxz.mongodb.net/?retryWrites=true&w=majority";
-export const PORT = process.env.PORT || 3000;
+export const PORT = process.env.PORT || 3001;
 
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Ruta para manejar el webhook de Stripe
+import { handleWebhook } from './controllers/stripe.controllers.js';
+app.post('/api/stripe/webhook', handleWebhook);
 
 app.use(
   fileUpload({
@@ -46,6 +53,7 @@ app.use("/api", facturasProveedoresRouter);
 app.use("/api", facturasEmpleadoRouter);
 app.use("/api", clientesRouter);
 app.use("/api", cocinaRouter);
+app.use("/api", stripeRouter);
 
 // SSE Route: Mantenimiento de conexiones SSE
 let connections = []; // Almacena todas las conexiones activas
