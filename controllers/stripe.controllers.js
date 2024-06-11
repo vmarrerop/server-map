@@ -20,7 +20,7 @@ export const getPrices = async (req, res) => {
 
 export const createCheckoutSession = async (req, res) => {
   try {
-    const { priceId, userId } = req.body;
+    const { priceId } = req.body;
 
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
@@ -31,7 +31,7 @@ export const createCheckoutSession = async (req, res) => {
           quantity: 1,
         },
       ],
-      success_url: `http://localhost:3000/success?userId=${userId}`,
+      success_url: `http://localhost:3000/success`,
       cancel_url: 'http://localhost:3000/pricing',
     });
 
