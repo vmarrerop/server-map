@@ -10,13 +10,19 @@ export const getPrices = async (req, res) => {
     const prices = await stripe.prices.list();
     return res.json({
       message: "Hello from /api/prices",
-      prices: prices.data
+      prices: prices.data.map(price => ({
+        id: price.id,
+        unit_amount: price.unit_amount,
+        nickname: price.nickname,
+        description: price.product.name, // Ajusta según la estructura de tu producto en Stripe
+      })),
     });
   } catch (error) {
     console.error('Error fetching prices from Stripe:', error);
     return res.status(500).json({ message: error.message });
   }
 };
+
 
 export const createCheckoutSession = async (req, res) => {
   try {

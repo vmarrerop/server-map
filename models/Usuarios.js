@@ -6,15 +6,13 @@ const usuarioSchema = new mongoose.Schema(
     empresaId: {
       type: String,
       unique: true,
-      default: uuidv4, // Usar uuidv4 para generar un identificador único
+      default: uuidv4,
       required: true,
     },
-
     nombre: {
       type: String,
       trim: true,
     },
-
     sedes: [
       {
         nombre: {
@@ -24,11 +22,9 @@ const usuarioSchema = new mongoose.Schema(
         base: {
           type: Number,
           trim: true,
-          //unique: true,
         },
       }
     ],
-    
     empleados: [
       {
         nombre: {
@@ -39,6 +35,7 @@ const usuarioSchema = new mongoose.Schema(
           type: String,
           trim: true,
           unique: true,
+          sparse: true, // Permitir valores nulos
         },
         direccion: {
           type: String,
@@ -52,6 +49,7 @@ const usuarioSchema = new mongoose.Schema(
           type: String,
           trim: true,
           unique: true,
+          sparse: true, // Permitir valores nulos
         },
         contraseña: {
           type: String,
