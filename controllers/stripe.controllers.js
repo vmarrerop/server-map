@@ -3,7 +3,7 @@ import Usuario from '../models/Usuarios.js';
 import mongoose from 'mongoose';
 
 // Inicializar la instancia de Stripe con la clave secreta
-const stripe = new Stripe('pk_live_51PNfGu2MNK4GBjOUk9JyWqePhXKj49jaeajTGOPy8SN2l6Ify87S4m96SQ9N6AFgmc4tTvtiojBuF7mjkkJMND6m00h4dBXMHC');
+const stripe = new Stripe('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');
 
 export const getPrices = async (req, res) => {
   try {
