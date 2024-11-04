@@ -1,8 +1,8 @@
 import { v2 as cloudinary } from "cloudinary";
 
-const CLOUD_NAME = "dexnz8ovy";
-const API_KEY = "858828233766297";
-const API_SECRET = "louy6_ahr2mEweTfXHUlMIvDV48";
+const CLOUD_NAME = process.env.CLOUD_NAME;
+const API_KEY = process.env.API_KEY;
+const API_SECRET = process.env.API_SECRET;
 
 cloudinary.config({
   cloud_name: CLOUD_NAME,

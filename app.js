@@ -13,7 +13,7 @@ const app = express();
 dotenv.config();
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-export const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://everandres:KPxAzrmoqfv8qzAR@ospa.jtty6om.mongodb.net/?retryWrites=true&w=majority";
+export const MONGODB_URI = process.env.MONGODB_URI;
 export const PORT = process.env.PORT || 3001;
 
 app.use(morgan("dev"));
